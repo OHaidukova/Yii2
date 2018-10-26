@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\tables\Users;
 use Yii;
 use app\models\tables\Tasks;
 use app\models\tables\TasksSearch;
@@ -52,8 +53,20 @@ class AdminTasksController extends Controller
      */
     public function actionView($id)
     {
+        $cache = \Yii::$app->cache;
+        $key = 'task_' . $id;
+
+        var_dump($cache->exists($key));
+        if($cache->exists($key)) {
+            $model = $cache->get($key);
+        }
+        else {
+            $model = $this->findModel($id);
+            $cache->set($key, $model, 40);
+        };
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 

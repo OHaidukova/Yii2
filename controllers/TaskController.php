@@ -14,6 +14,7 @@ use app\models\tables\Tasks;
 use app\models\tables\Users;
 use app\models\Test;
 use yii\base\Event;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 
@@ -221,6 +222,25 @@ class TaskController extends Controller
 //
 //            $task->save();
 
+    }
+
+    public function actionCache() {
+
+        $key = 'number';
+        $cache = \Yii::$app->cache;
+
+//        $cache->flush();
+
+        if($cache->exists($key)) {
+            var_dump("123");
+            $number = $cache->get($key);
+        }
+        else {
+            $number = rand();
+            $cache->set($key, $number, 10);
+        };
+
+        var_dump($number);
     }
 
 }

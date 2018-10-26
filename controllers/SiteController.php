@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use Yii;
+use yii\caching\DbDependency;
 use yii\filters\AccessControl;
+use yii\filters\PageCache;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -34,6 +36,16 @@ class SiteController extends Controller
                 'actions' => [
                     'logout' => ['post'],
                 ],
+            ],
+            'cache' => [
+                'class' => PageCache::class,
+                'only' => ['contact', 'index'],
+                'duration' => 200,
+                'variation' => Yii::$app->language,
+                'dependency' => [
+                    'class' => DbDependency::class,
+                    'sql' => "SELECT * FROM Tasks"
+                ]
             ],
         ];
     }
