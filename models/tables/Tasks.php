@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\imagine\Image;
 
 /**
  * This is the model class for table "tasks".
@@ -18,9 +19,13 @@ use yii\db\Expression;
  * @property string $date_create
  * @property string $date_resolve
  * @property int $id_status
+ * @property string $img
  */
 class Tasks extends \yii\db\ActiveRecord
 {
+    public $image;
+
+
     /**
      * {@inheritdoc}
      */
@@ -55,6 +60,8 @@ class Tasks extends \yii\db\ActiveRecord
             [['number', 'name'], 'string', 'max' => 50],
             [['details'], 'string', 'max' => 500],
             [['number'], 'unique'],
+            [['img'], 'string', 'max' => 200],
+            [['image'], 'file', 'extensions' => 'jpg, png'],
         ];
     }
 
@@ -73,6 +80,8 @@ class Tasks extends \yii\db\ActiveRecord
             'date_resolve' => 'Date Resolve',
             'id_status' => 'Id Status',
             'date_change' => 'Date Change',
+            'img' => 'Img',
+            'image' => 'Image',
         ];
     }
 
@@ -82,6 +91,18 @@ class Tasks extends \yii\db\ActiveRecord
             ->andWhere(['>', 'date_create', new Expression('LAST_DAY(CURDATE()) + INTERVAL 1 DAY - INTERVAL 1 MONTH') ])
             ->andWhere(['<', 'date_create', new Expression('DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY)') ]);
 //            ->all();
+    }
+
+    public function upload() {
+
+        if($this->validate()) {
+            $baseName = $this->image->getBaseName() . "." . $this->image->getExtension();
+            $fileName = '@webroot/img/' . $baseName;
+            $this->image->saveAs(\Yii::getAlias($fileName));
+            Image::thumbnail($fileName, 100, 120)->save(\Yii::getAlias('@webroot/img/small/' . $baseName));
+            return \Yii::getAlias('@webroot/img/small/' . $baseName);
+        } return false;
+
     }
 
 }

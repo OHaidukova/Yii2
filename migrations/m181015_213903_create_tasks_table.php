@@ -22,6 +22,7 @@ class m181015_213903_create_tasks_table extends Migration
             'date_resolve' => $this->date(),
             'id_status' => $this->integer(),
             'date_change' => $this->dateTime(),
+            'img' => $this->string(200),
         ]);
 
         $this->createIndex("index_number", "tasks", "number", true);

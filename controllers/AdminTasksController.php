@@ -9,6 +9,7 @@ use app\models\tables\TasksSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * AdminTasksController implements the CRUD actions for Tasks model.
@@ -79,8 +80,18 @@ class AdminTasksController extends Controller
     {
         $model = new Tasks();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if ($model->image) {
+                $model->img = $model->upload();
+            };
+
+            $model->image = null;
+
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
         }
 
         return $this->render('create', [

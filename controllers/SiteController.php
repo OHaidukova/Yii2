@@ -37,16 +37,16 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
-            'cache' => [
-                'class' => PageCache::class,
-                'only' => ['contact', 'index'],
-                'duration' => 200,
-                'variation' => Yii::$app->language,
-                'dependency' => [
-                    'class' => DbDependency::class,
-                    'sql' => "SELECT * FROM Tasks"
-                ]
-            ],
+//            'cache' => [
+//                'class' => PageCache::class,
+//                'only' => ['contact', 'index'],
+//                'duration' => 200,
+//                'variation' => Yii::$app->language,
+//                'dependency' => [
+//                    'class' => DbDependency::class,
+//                    'sql' => "SELECT * FROM Tasks"
+//                ]
+//            ],
         ];
     }
 
@@ -139,5 +139,9 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionLanguage($language) {
+        Yii::app()->language = $language;
     }
 }

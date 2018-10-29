@@ -17,6 +17,7 @@ use yii\base\Event;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 
 class TaskController extends Controller
 {
@@ -221,6 +222,23 @@ class TaskController extends Controller
 //            ]);
 //
 //            $task->save();
+
+
+//        Image + Language!!!!
+
+//        \Yii::$app->language = "en";
+        echo \Yii::t('app', 'error', ['error_code' => 404]);
+
+        exit;
+
+        $model = new Test();
+        if(\Yii::$app->request->isPost) {
+          $model->load(\Yii::$app->request->post());
+          $model->image = UploadedFile::getInstance($model, 'image');
+          $model->upload();
+        };
+
+        return $this->render('test', ['model' => $model]);
 
     }
 

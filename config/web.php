@@ -5,11 +5,17 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'events'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+    ],
+    'modules' => [
+        'admin' => [
+            'class' => '\app\modules\admin\Admin',
+        ],
     ],
     'components' => [
         'request' => [
@@ -18,7 +24,14 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
+//            'class' => \yii\redis\Cache::class,
         ],
+//        'redis' => [
+//            'class' => 'yii\redis\Connection',
+//            'hostname' => 'localhost',
+//            'port' => 6379,
+//            'database' => 0,
+//        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
@@ -54,6 +67,15 @@ $config = [
             ],
         ],
         */
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'basePath' => "@app/messages",
+                    'forceTranslation' => true,
+                ]
+            ],
+        ],
     ],
     'params' => $params,
 ];
