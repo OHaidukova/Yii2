@@ -59,14 +59,17 @@ $config = [
         'events' => [
             'class' => \app\components\EventsComponent::class
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'test/<id>' => 'task/test',
+//                'test' => 'task/test',
+
             ],
         ],
-        */
+
         'i18n' => [
             'translations' => [
                 'app*' => [

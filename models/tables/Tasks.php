@@ -91,6 +91,14 @@ class Tasks extends \yii\db\ActiveRecord
             ->andWhere(['>', 'date_create', new Expression('LAST_DAY(CURDATE()) + INTERVAL 1 DAY - INTERVAL 1 MONTH') ])
             ->andWhere(['<', 'date_create', new Expression('DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY)') ]);
 //            ->all();
+
+    }
+
+    public static function getTasksEnd()
+    {
+        return static::find()
+            ->andWhere(['<', 'date_resolve', new Expression('CURDATE() + INTERVAL 3 DAY') ])
+            ->all();
     }
 
     public function upload() {
