@@ -37,6 +37,7 @@ class AdminTasksController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->can("viewTasks")) {
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -44,6 +45,9 @@ class AdminTasksController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        } else {
+            var_dump("You don't have permission");
+        }
     }
 
     /**
@@ -54,6 +58,7 @@ class AdminTasksController extends Controller
      */
     public function actionView($id)
     {
+        if(Yii::$app->user->can("viewTask")) {
         $cache = \Yii::$app->cache;
         $key = 'task_' . $id;
 
@@ -69,6 +74,9 @@ class AdminTasksController extends Controller
         return $this->render('view', [
             'model' => $model,
         ]);
+        } else {
+            var_dump("You don't have permission");
+        }
     }
 
     /**
@@ -78,6 +86,7 @@ class AdminTasksController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->can("createTask")) {
         $model = new Tasks();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -97,6 +106,9 @@ class AdminTasksController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+        } else {
+            var_dump("You don't have permission");
+        }
     }
 
     /**
@@ -108,6 +120,7 @@ class AdminTasksController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->can("updateTask")) {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -117,6 +130,9 @@ class AdminTasksController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+        } else {
+            var_dump("You don't have permission");
+        }
     }
 
     /**
@@ -128,9 +144,13 @@ class AdminTasksController extends Controller
      */
     public function actionDelete($id)
     {
+        if(Yii::$app->user->can("deleteTask")) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+        } else {
+            var_dump("You don't have permission");
+        }
     }
 
     /**

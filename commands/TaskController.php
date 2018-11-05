@@ -31,7 +31,7 @@ class TaskController extends Controller
     public function actionTest() {
         $task = Tasks::getTasksEnd();
 
-        for($i = 0; $i < count($task); $i++) {
+        for($i = 0; $i < count($task) - 1; $i++) {
             var_dump($user = Users::findOne($task[$i]->id_developer));
         };
 

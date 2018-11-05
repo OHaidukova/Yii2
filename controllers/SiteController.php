@@ -73,7 +73,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+//        if(Yii::$app->user->can("deleteTask")) {
+            return $this->render('index');
+//        } else {
+//            throw new \Exception("You don't have permission");
+//        }
     }
 
     /**
